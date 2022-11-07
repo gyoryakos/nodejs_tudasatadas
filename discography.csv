@@ -1,0 +1,19 @@
+[
+    { "id": 1, title": "Iron Maiden", "year": 1980 },
+    { "id": 2, "title": "Killers", "year": 1981 },
+    { "id": 3, "title": "The Number of the Beast", "year": 1982 },
+    { "id": 4, "title": "Piece of Mind", "year": 1983 },
+    { "id": 5, "title": "Powerslave", "year": 1984 },
+    { "id": 6, "title": "Somewhere in Time", "year": 1986 },
+    { "id": 7, "title": "Seventh Son of a Seventh Son", "year": 1988 },
+    { "id": 8, "title": "No Prayer for the Dying", "year": 1990 },
+    { "id": 9, "title": "Fear of the Dark", "year": 1992 },
+    { "id": 10, "title": "The X Factor", "year": 1995 },
+    { "id": 11, "title": "Virtual XI", "year": 1998 },
+    { "id": 12, "title": "Brave New World", "year": 2000 },
+    { "id": 13, "title": "Dance of Death", "year": 2003 },
+    { "id": 14, "title": "A Matter of Life and Death", "year": 2006 },
+    { "id": 15, "title": "The Final Frontier", "year": 2010 },
+    { "id": 16, "title": "The Book of Souls", "year": 2015 },
+    { "id": 17, "title": "Senjutsu", "year": 2021 }
+]
