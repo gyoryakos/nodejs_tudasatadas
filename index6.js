@@ -48,7 +48,6 @@ const requestListener = function (req, res) {
                 const jsonData = JSON.parse(data);
                 console.log('jsondata: ' + jsonData);
 
-
                 let searchedAlbum;
 
                 for(let album of jsonData.albums) {
@@ -85,9 +84,7 @@ const requestListener = function (req, res) {
                 })
                 res.end();    
             })
-            break;
-
-            
+            break;     
             
             // req.on('end', () => {
             //     const newAlbum = JSON.parse(body);
