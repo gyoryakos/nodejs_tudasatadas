@@ -4,55 +4,53 @@ const path = require('path');
 
 const requestListener = function (req, res) {
     switch(true) {
-        // Get main page.
+        // GET main page.
         case req.url === '/' && req.method === 'GET':
-            res.setHeader('content-type', 'text/html; charset=utf-8')
-            res.writeHead(200);
-            res.end(
-                `
-                    <h1 style="color:blue">Rock bands</h1>
-                    <button><a href="/iron_maiden">Iron Maiden<a/></button>
-                `
-            );
-            break;
+        res.setHeader('content-type', 'text/html; charset=utf-8')
+        res.writeHead(200);
+        res.end(
+            `
+                <h1 style="color:blue">Rock bands</h1>
+                <button><a href="/iron_maiden">Iron Maiden<a/></button>
+            `
+        );
+        break;
         // Get Iron Maiden page.
         case req.url === '/iron_maiden' && req.method === 'GET':
-            res.setHeader('content-type', 'text/html; charset=utf-8')
-            res.writeHead(200);
-            res.end(
-                `
-                    <h2 style="color:red">Iron Maiden</h2>
-                    <button style="margin:15px"><a href="/iron_maiden/history">History</a></button>
-                    <button style="margin:15px"><a href="/iron_maiden/discography">Discography</a></button>
-                    <button style="margin:15px"><a href="/iron_maiden/shop">Shop</a></button>
-                    <br>
-                    <button><a href="/">Back to the main page</a></button>
-                `
-            );
-            break;
+        res.setHeader('content-type', 'text/html; charset=utf-8')
+        res.writeHead(200);
+        res.end(
+            `
+                <h2 style="color:red">Iron Maiden</h2>
+                <button style="margin:15px"><a href="/iron_maiden/history">History</a></button>
+                <button style="margin:15px"><a href="/iron_maiden/discography">Discography</a></button>
+                <button style="margin:15px"><a href="/iron_maiden/shop">Shop</a></button>
+                <br>
+                <button><a href="/">Back to the main page</a></button>
+            `
+        );
+        break;
+        // GET Iron Maiden discography.
         case req.url === '/iron_maiden/discography' && req.method === 'GET':
-            fs.readFile(__dirname + "/discography.txt", (err, data) => {
-                res.setHeader('content-type', 'text/html; charset=utf-8')
-                const jsonData = JSON.parse(data);
+            fs.readFile(__dirname + "/discographyTest.json", (err, data) => {
+                res.setHeader('content-type', 'application/json; charset=utf-8')
                 res.writeHead(200);
-                res.end(JSON.stringify(jsonData.albums));  
+                res.end(data);  
             })
             break;
+        // GET an album by id.
         case req.url.match(/\/iron_maiden\/discography\/([0-9]+)/) && req.method === 'GET':
-            const splitUrl = req.url.split("/");
-            const id = splitUrl[splitUrl.length - 1];
+            const splitUrlGET = req.url.split("/");
+            const idGET = splitUrlGET[splitUrlGET.length - 1];
 
-            fs.readFile(path.join(__dirname, "discography.txt"), (err, data) => {
+            fs.readFile(path.join(__dirname, "discographyTest.json"), (err, data) => {
                 res.setHeader('content-type', 'application/json; charset=utf-8');
-                console.log('data: ' + data);
-                const jsonData = JSON.parse(data);
-                console.log('jsondata: ' + jsonData);
-
+                const albums = JSON.parse(data);
                 let searchedAlbum;
 
-                for(let album of jsonData.albums) {
-                    if(album.id == id) {
-                        searchedAlbum = album
+                for(let album of albums) {
+                    if(album.id == idGET) {
+                        searchedAlbum = album;
                     }
                 }
 
@@ -65,6 +63,7 @@ const requestListener = function (req, res) {
                 }
             })
             break;
+        // POST an album.
         case req.url === '/iron_maiden/discography' && req.method === 'POST':
             let body = '';
             req.on('data', chunk => {
@@ -74,54 +73,51 @@ const requestListener = function (req, res) {
             req.on('end', () => {
                 const newAlbum = JSON.parse(body);
                 
-                fs.readFile(path.join(__dirname, 'discography.json'), (err, data) => {
+                fs.readFile(path.join(__dirname, 'discographyTest.json'), (err, data) => {
                     const albums = JSON.parse(data);
                     albums.push(newAlbum);
 
-                    fs.writeFile(path.join(__dirname, 'discography.json'), JSON.stringify(albums), () => {
+                    fs.writeFile(path.join(__dirname, 'discographyTest.json'), JSON.stringify(albums), () => {
                         res.end(JSON.stringify(newAlbum));
                     })
                 })
-                res.end();    
             })
-            break;     
-            
-            // req.on('end', () => {
-            //     const newAlbum = JSON.parse(body);
-            //     console.log("newAlbum" + newAlbum);
-                
-            //     fs.readFile(path.join(__dirname, 'discography.json'), (err, data) => {
-            //         console.log("data: " + data)
-            //         const albums = JSON.parse(data);
-            //         albums.push(newAlbum);
+            break;
+        // DELETE an album by id.
+        case req.url.match(/\/iron_maiden\/discography\/([0-9]+)/) && req.method === 'DELETE':
+            const splitUrlDELETE = req.url.split("/");
+            const idDELETE= splitUrlDELETE[splitUrlDELETE.length - 1];
 
-            //         fs.writeFile(path.join(__dirname, 'discography.json'), JSON.stringify(albums), () => {
-            //             res.end(JSON.stringify(newAlbum));
-            //         })
-            //     })
-            //     res.end();    
-            // })
+            fs.readFile(path.join(__dirname, "discographyTest.json"), (err, data) => {
+                res.setHeader('content-type', 'application/json; charset=utf-8');
+                const albums = JSON.parse(data);
+                console.log("data: " + data);
+                let searchedAlbum;
+                let index = 0; // index of selected item in array
 
-            // req.on('end', () => {
-            //     const newAlbum = JSON.parse(body);
-            //     console.log("newAlbum" + newAlbum);
-                
-            //     fs.readFile(path.join(__dirname, 'discography.txt'), (err, data) => {
-            //         newData = JSON.parse(data);
-            //         console.log("newData: " + newData);
-            //         const albums = newData.albums;
-            //         console.log("albums: " + albums);
-            //         const parsedAlbums = JSON.parse(albums);
+                for(let album of albums) {
+                    index++;
+                    if(album.id == idDELETE) {
+                        searchedAlbum = album;
+                        index--;
+                        break;
+                    }
+                }
 
-            //         albums.push(newAlbum);
+                console.log("searchedAlbum: " + searchedAlbum);
+                console.log('index: ' + index);
 
-            //         fs.writeFile(path.join(__dirname, 'discography.txt'), JSON.stringify(albums), () => {
-            //             res.end(JSON.stringify(newAlbum));
-            //         })
-            //     })
-            //     res.end();
-            //})
-           // break;
+                if(searchedAlbum == undefined) {
+                    res.end("There is no album with this id.")
+                }
+
+                albums.splice(index, 1);
+
+                fs.writeFile(path.join(__dirname, 'discographyTest.json'), JSON.stringify(albums), () => {
+                    res.end(JSON.stringify(albums));
+                })
+            });
+            break;
         default:
             res.setHeader('content-type', 'text/html; charset=utf-8')
             res.writeHead(404);
