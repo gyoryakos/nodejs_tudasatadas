@@ -42,11 +42,12 @@ const requestListener = function (req, res) {
             const splitUrl = req.url.split("/");
             const id = splitUrl[splitUrl.length - 1];
 
-            fs.readFile(path.join(__dirname, "discography.json"), (err, data) => {
+            fs.readFile(path.join(__dirname, "discography.txt"), (err, data) => {
                 res.setHeader('content-type', 'application/json; charset=utf-8');
-                console.log('data' + data);
+                console.log('data: ' + data);
                 const jsonData = JSON.parse(data);
-                
+                console.log('jsondata: ' + jsonData);
+
 
                 let searchedAlbum;
 
@@ -85,6 +86,45 @@ const requestListener = function (req, res) {
                 res.end();    
             })
             break;
+
+            
+            
+            // req.on('end', () => {
+            //     const newAlbum = JSON.parse(body);
+            //     console.log("newAlbum" + newAlbum);
+                
+            //     fs.readFile(path.join(__dirname, 'discography.json'), (err, data) => {
+            //         console.log("data: " + data)
+            //         const albums = JSON.parse(data);
+            //         albums.push(newAlbum);
+
+            //         fs.writeFile(path.join(__dirname, 'discography.json'), JSON.stringify(albums), () => {
+            //             res.end(JSON.stringify(newAlbum));
+            //         })
+            //     })
+            //     res.end();    
+            // })
+
+            // req.on('end', () => {
+            //     const newAlbum = JSON.parse(body);
+            //     console.log("newAlbum" + newAlbum);
+                
+            //     fs.readFile(path.join(__dirname, 'discography.txt'), (err, data) => {
+            //         newData = JSON.parse(data);
+            //         console.log("newData: " + newData);
+            //         const albums = newData.albums;
+            //         console.log("albums: " + albums);
+            //         const parsedAlbums = JSON.parse(albums);
+
+            //         albums.push(newAlbum);
+
+            //         fs.writeFile(path.join(__dirname, 'discography.txt'), JSON.stringify(albums), () => {
+            //             res.end(JSON.stringify(newAlbum));
+            //         })
+            //     })
+            //     res.end();
+            //})
+           // break;
         default:
             res.setHeader('content-type', 'text/html; charset=utf-8')
             res.writeHead(404);
