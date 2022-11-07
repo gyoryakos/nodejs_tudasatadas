@@ -2,9 +2,6 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-//const rw = fs.createReadStream(path.join(__dirname, 'discography.json'));
-//const ws = fs.createWriteStream(path.join(__dirname, 'album.json'));
-
 const requestListener = function (req, res) {
     switch(true) {
         // Get main page.
@@ -45,10 +42,12 @@ const requestListener = function (req, res) {
             const splitUrl = req.url.split("/");
             const id = splitUrl[splitUrl.length - 1];
 
-            fs.readFile(path.join(__dirname, "discography.txt"), (err, data) => {
-                res.setHeader('content-type', 'application/json; charset=utf-8')
+            fs.readFile(path.join(__dirname, "discography.json"), (err, data) => {
+                res.setHeader('content-type', 'application/json; charset=utf-8');
+                console.log('data' + data);
                 const jsonData = JSON.parse(data);
-                const albums = JSON.stringify(jsonData.albums)
+                
+
                 let searchedAlbum;
 
                 for(let album of jsonData.albums) {
@@ -58,7 +57,6 @@ const requestListener = function (req, res) {
                 }
 
                 if(searchedAlbum == undefined) {
-                    //ws.write(searchedAlbum);
                     res.end("There is no album with this id.")
                 }
                 else {
@@ -70,9 +68,7 @@ const requestListener = function (req, res) {
         case req.url === '/iron_maiden/discography' && req.method === 'POST':
             let body = '';
             req.on('data', chunk => {
-                console.log("hi");
                 body += chunk.toString();
-                console.log("body" + body);
             })
 
             req.on('end', () => {
