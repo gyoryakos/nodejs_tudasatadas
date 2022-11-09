@@ -1,4 +1,5 @@
 const http = require('http');
+const port = 8080;
 
 const requestListener = function (req, res) {
     switch(true) {
@@ -35,4 +36,4 @@ const requestListener = function (req, res) {
 }
 
 const server = http.createServer(requestListener);
-server.listen(8080);
+server.listen(port);

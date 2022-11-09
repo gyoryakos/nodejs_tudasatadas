@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const port = 8080;
 
 const requestListener = function (req, res) {
     switch(true) {
@@ -126,4 +127,4 @@ const requestListener = function (req, res) {
 }
 
 const server = http.createServer(requestListener);
-server.listen(8080);
+server.listen(port);
