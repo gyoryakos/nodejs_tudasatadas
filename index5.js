@@ -4,7 +4,7 @@ const port = 8080;
 const requestListener = function (req, res) {
     switch(true) {
         case req.url === '/' && req.method === 'GET':
-            //res.setHeader('content-type', 'text/html; charset=utf-8')
+            res.setHeader('content-type', 'text/html; charset=utf-8')
             res.writeHead(200);
             res.end(
                 `
@@ -14,7 +14,7 @@ const requestListener = function (req, res) {
             );
             break;
         case req.url === '/iron_maiden' && req.method === 'GET':
-            //res.setHeader('content-type', 'text/html; charset=utf-8')
+            res.setHeader('content-type', 'text/html; charset=utf-8')
             res.writeHead(200);
             res.end(
                 `
@@ -28,7 +28,7 @@ const requestListener = function (req, res) {
             );
             break;
         default:
-            //res.setHeader('content-type', 'text/html; charset=utf-8')
+            res.setHeader('content-type', 'text/html; charset=utf-8')
             res.writeHead(404);
             res.end('Page not found.');
     }

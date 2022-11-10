@@ -36,7 +36,7 @@ const requestListener = function (req, res) {
             fs.readFile(__dirname + "/discographyTest.json", (err, data) => {
                 res.setHeader('content-type', 'application/json; charset=utf-8')
                 res.writeHead(200);
-                res.end(data);  
+                res.end(data);
             })
             break;
         // GET an album by id.
@@ -75,6 +75,9 @@ const requestListener = function (req, res) {
                 const newAlbum = JSON.parse(body);
                 
                 fs.readFile(path.join(__dirname, 'discographyTest.json'), (err, data) => {
+                    if(err) {
+                        res.end("The file not found.");
+                    }
                     const albums = JSON.parse(data);
                     albums.push(newAlbum);
 
@@ -105,9 +108,6 @@ const requestListener = function (req, res) {
                     }
                 }
 
-                console.log("searchedAlbum: " + searchedAlbum);
-                console.log('index: ' + index);
-
                 if(searchedAlbum == undefined) {
                     res.end("There is no album with this id.")
                 }
@@ -115,7 +115,8 @@ const requestListener = function (req, res) {
                 albums.splice(index, 1);
 
                 fs.writeFile(path.join(__dirname, 'discographyTest.json'), JSON.stringify(albums), () => {
-                    res.end(JSON.stringify(albums));
+                    res.end(JSON.stringify(searchedAlbum));
+                    //res.end(JSON.stringify(albums));
                 })
             });
             break;
